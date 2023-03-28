@@ -1,11 +1,15 @@
 # Missing ratio for masked values
-missing_ratio = 0.3
-## Default value to replace the nan before being feeded to NN
-val_spec = 0
-## Random seed
-random_state = 42
+missing_ratio: 0.3
+# Default value to replace the nan before being feeded to NN
+val_spec: 0
+# Random seed
+random_state: 42
+# Sequence Length
+seq_length: 48
+# Batch size
+batch_size: 32
 # List of statistical methods covered
-class_methods = [
+class_methods: [
     "mean",
     "median",
     "mode",

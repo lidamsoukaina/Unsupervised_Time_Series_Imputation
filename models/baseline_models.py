@@ -3,7 +3,6 @@ from typing import Literal
 from sklearn.impute import SimpleImputer, KNNImputer
 from sklearn.experimental import enable_iterative_imputer
 from sklearn.impute import IterativeImputer
-from global_config import random_state
 
 
 def classical_imputer(
@@ -19,8 +18,8 @@ def classical_imputer(
         "knn",
         "mice",
     ],
+    random_state,
     spline_order=3,
-    random_state=random_state,
     n_neighbors=5,
 ) -> pd.DataFrame:
     """

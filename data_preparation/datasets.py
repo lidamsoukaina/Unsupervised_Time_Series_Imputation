@@ -1,5 +1,6 @@
 import torch
 from torch.utils.data import Dataset
+from torch.utils.data import DataLoader
 import numpy as np
 import pandas as pd
 from induce_nans import random_mask_tensor
@@ -54,3 +55,41 @@ class TSImputationEvalDataset(Dataset):
             mask = torch.cat([mask, padding.bool()], dim=0)
         masked_input[torch.isnan(masked_input)] = 0
         return target, masked_input, mask
+
+
+if __name__ == "__main__":
+    from sklearn.preprocessing import MinMaxScaler
+    from preprocessing import preprocess_data
+    from induce_nans import generating_missing_values
+    import configue
+
+    # Get config
+    config = configue.load("./config.yaml")
+    seq_length = config["seq_length"]
+    missing_ratio = config["missing_ratio"]
+    batch_size = config["batch_size"]
+    random_state = config["random_state"]
+    # Define paths
+    train_path = "data/train.csv"
+    val_path = "data/val.csv"
+    test_path = "data/test.csv"
+    # Preprocess data
+    train, val, test = preprocess_data(
+        train_path, val_path, test_path, MinMaxScaler(), ["Date"]
+    )
+    # generate test data
+    test_nan, test_mask = generating_missing_values(
+        test, missing_ratio, random_state, "Global_active_power", "Global_intensity"
+    )
+
+    # Create datasets
+    train_dataset = TSImputationTrainDataset(train, seq_length, missing_ratio)
+    val_dataset = TSImputationTrainDataset(val, seq_length, missing_ratio)
+    test_dataset = TSImputationEvalDataset(test, test_nan, test_mask, seq_length)
+    # Create dataloaders
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
+    test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False)
+    print("total training batch number: {}".format(len(train_loader)))
+    print("total validation batch number: {}".format(len(val_loader)))
+    print("total test batch number: {}".format(len(test_loader)))
