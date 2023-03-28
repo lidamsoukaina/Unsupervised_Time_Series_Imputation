@@ -4,7 +4,11 @@ from scipy import stats
 
 
 def t_test(
-    df: pd.DataFrame, df_imputed: pd.DataFrame, mask: np.ndarray, method_title: str
+    df: pd.DataFrame,
+    df_imputed: pd.DataFrame,
+    mask: np.ndarray,
+    method_title: str,
+    alpha: float = 0.05,
 ) -> pd.DataFrame:
     """
     T-test for the imputed data and the original data
@@ -24,6 +28,6 @@ def t_test(
             method_title,
             df.columns[n],
             ttest.pvalue[n],
-            ttest.pvalue[n] < 0.05,
+            ttest.pvalue[n] < alpha,
         ]
     return test_stat

@@ -19,7 +19,7 @@ def evaluate_imputation_mse(
         {
             "method": method_title,
             "mse": mse_per_column.mean(),
-            "var": mse_per_column.var(),
+            "std": mse_per_column.std(),
         },
         index=[0],
     )
