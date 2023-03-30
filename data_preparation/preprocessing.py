@@ -1,5 +1,5 @@
 import pandas as pd
-from typing import Tuple
+from typing import Tuple, List
 
 
 def preprocess_data(
@@ -7,7 +7,7 @@ def preprocess_data(
     val_path: str,
     test_path: str,
     scaler: callable,
-    columns_to_drop: list[str],
+    columns_to_drop: List[str],
 ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """
     Preprocess Data
