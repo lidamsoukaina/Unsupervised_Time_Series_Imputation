@@ -11,6 +11,7 @@ def evaluate_set(
     test: pd.DataFrame,
     test_nan: pd.DataFrame,
     test_mask: np.ndarray,
+    random_state: int,
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """
     Evaluate the imputation methods on the test set
@@ -18,12 +19,13 @@ def evaluate_set(
     :param test: test set
     :param test_nan: test set with missing values
     :param test_mask: mask of missing values
+    :param random_state: random state
     :return: a tuple of two dataframes, the first one contains the mse of each imputation method, the second one contains the t-test results
     """
     evals = pd.DataFrame()
     tests = pd.DataFrame()
     for strat in list_methods:
-        df_imputed = classical_imputer(test_nan, strat)
+        df_imputed = classical_imputer(test_nan, strat, random_state)
         evals = pd.concat(
             [evals, evaluate_imputation_mse(test, df_imputed, test_mask, strat)]
         )
