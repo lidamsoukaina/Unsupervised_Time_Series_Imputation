@@ -1,9 +1,10 @@
+import pandas as pd
+
 import torch
 from torch.utils.data import Dataset
 from torch.utils.data import DataLoader
-import numpy as np
-import pandas as pd
-from induce_nans import random_mask_tensor
+
+from .induce_nans import random_mask_tensor
 
 
 class TSImputationTrainDataset(Dataset):
@@ -57,31 +58,14 @@ class TSImputationEvalDataset(Dataset):
         return target, masked_input, mask
 
 
-if __name__ == "__main__":
-    from sklearn.preprocessing import MinMaxScaler
-    from preprocessing import preprocess_data
-    from induce_nans import generating_missing_values
-    import configue
-
-    # Get config
-    config = configue.load("./config.yaml")
-    seq_length = config["seq_length"]
+def main(config, config_model, train, val, test, test_nan, test_mask):
+    seq_length = config_model["sequence_length"]
     missing_ratio = config["missing_ratio"]
-    batch_size = config["batch_size"]
-    random_state = config["random_state"]
-    # Define paths
-    train_path = "data/train.csv"
-    val_path = "data/val.csv"
-    test_path = "data/test.csv"
-    # Preprocess data
-    train, val, test = preprocess_data(
-        train_path, val_path, test_path, MinMaxScaler(), ["Date"]
-    )
-    # generate test data
-    test_nan, test_mask = generating_missing_values(
-        test, missing_ratio, random_state, "Global_active_power", "Global_intensity"
-    )
-
+    batch_size = config_model["batch_size"]
+    # Check for missing values
+    assert train.isnull().sum().sum() == 0
+    assert val.isnull().sum().sum() == 0
+    assert test.isnull().sum().sum() == 0
     # Create datasets
     train_dataset = TSImputationTrainDataset(train, seq_length, missing_ratio)
     val_dataset = TSImputationTrainDataset(val, seq_length, missing_ratio)
@@ -93,3 +77,4 @@ if __name__ == "__main__":
     print("total training batch number: {}".format(len(train_loader)))
     print("total validation batch number: {}".format(len(val_loader)))
     print("total test batch number: {}".format(len(test_loader)))
+    return train_loader, val_loader, test_loader

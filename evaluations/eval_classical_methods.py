@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
 from typing import Tuple
-from mse import evaluate_imputation_mse
-from t_test import t_test
-from models import classical_imputer
+from .mse import evaluate_imputation_mse
+from .t_test import t_test
+from models.baseline_models import classical_imputer
 
 
 def evaluate_set(

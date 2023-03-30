@@ -51,7 +51,7 @@ class Decoder_LSTM(nn.Module):
         return out
 
 
-class LSTM_AE(nn.Module):
+class LSTM_Autoencoder(nn.Module):
     """LSTM Autoencoder"""
 
     def __init__(self, seq_len, no_features, embedding_dim):

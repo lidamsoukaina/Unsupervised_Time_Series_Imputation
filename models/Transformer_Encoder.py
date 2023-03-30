@@ -1,16 +1,17 @@
 import torch
 import torch.nn as nn
-from utils import clones
 import math
 
+from .utils import clones
 
-class TST(nn.Module):
+
+class Transformer_Encoder(nn.Module):
     "Core encoder is a stack of N layers"
 
     def __init__(
         self, Encoder, PositionalEncoding, N, d_model, d_input
     ):  ## layer = EncoderLayer
-        super(TST, self).__init__()
+        super(Transformer_Encoder, self).__init__()
         self.first_layer = nn.Linear(d_input, d_model)
         self.PE = PositionalEncoding
         self.Encoder = Encoder
@@ -162,3 +163,18 @@ class PositionalEncoding(nn.Module):
     def forward(self, x):
         x = x + self.pe[:, : x.size(1)].requires_grad_(False)
         return self.dropout(x)
+
+
+def make_model(d_input, N, d_model, d_ff, h, dropout):
+    "Helper: Construct a model from hyperparameters."
+    attn = MultiHeadedAttention(h, d_model)
+    ff = PositionwiseFeedForward(d_model, d_ff, dropout)
+    Encoder_model = Encoder(EncoderLayer(d_model, attn, ff, dropout), N)
+    model = Transformer_Encoder(
+        Encoder_model, PositionalEncoding(d_model, dropout), N, d_model, d_input
+    )
+    # Initialize parameters with Xavier.
+    for p in model.parameters():
+        if p.dim() > 1:
+            nn.init.xavier_uniform_(p)
+    return model
