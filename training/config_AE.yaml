@@ -3,7 +3,7 @@ learning_rate: 0.26
 # reduction parameter
 reduction_parameter: 0.5
 # train epochs
-epochs: 70
+epochs: 2 #70
 # Sequence Length
 sequence_length: 24
 # Batch size
