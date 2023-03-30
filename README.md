@@ -1,10 +1,10 @@
-# time_series_imputation
+# Unsuperised Time Series Imputation
 
-A common challenge encountered during working with time series is the presence of missing data. To address this issue, imputation is a widely used approach that involves
-filling in missing values rather than dropping them. However, the key challenge in imputation is determining the appropriate values to use for filling in the missing data.
+[![Code style - black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-In this project, we propose to assess the effectiveness of applying deep learning-based models in time series imputation compared to statistical methods that do not require prior
-training.
+A common challenge encountered during working with time series is the presence of missing data. To address this issue, imputation is a widely used approach that involves filling in missing values rather than dropping them. However, the key challenge in imputation is determining the appropriate values to use for filling in the missing data.
+
+In this project, we propose to assess the effectiveness of applying deep learning-based models in time series imputation compared to statistical methods that do not require prior training.
 
 # Data
 
