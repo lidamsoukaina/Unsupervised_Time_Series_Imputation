@@ -1,7 +1,7 @@
 # learning_rate
 learning_rate: 0.001
 # train epochs
-epochs: 2 #30
+epochs: 30
 # Sequence Length
 sequence_length: 48
 # Batch size
