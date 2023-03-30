@@ -1,14 +1,14 @@
 # learning_rate
-learning_rate: 0.002
+learning_rate: 0.001
 # reduction parameter
 reduction_parameter: 0.6
 # train epochs
-epochs: 50
+epochs: 30
 # Sequence Length
-sequence_length: 36
+sequence_length: 48
 # Batch size
-batch_size: 16
+batch_size: 32
 # ORT_MIT_LOSS parameter
-loss_parameter: 0.5
+loss_parameter: 2
 # checkpoints paths
 models_path: "./trained_models/convAE"

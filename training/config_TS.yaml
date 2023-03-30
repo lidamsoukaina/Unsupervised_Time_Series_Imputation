@@ -3,9 +3,9 @@ learning_rate: 0.001
 # train epochs
 epochs: 30
 # Sequence Length
-sequence_length: 48
+sequence_length: 60
 # Batch size
-batch_size: 32
+batch_size: 16
 # ORT_MIT_LOSS parameter
 loss_parameter: 4
 # checkpoints paths
