@@ -13,3 +13,4 @@ IPython
 datetime
 warnings
 optuna
+plotly
