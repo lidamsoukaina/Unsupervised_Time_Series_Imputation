@@ -1,0 +1,30 @@
+# Random seed
+random_state: 42
+# List of statistical methods covered
+class_methods: [
+    "mean",
+    "median",
+    "mode",
+    "LOCF",
+    "NOCB",
+    "linear_interpolation",
+    "spline_interpolation",
+    "knn",
+    "mice",
+]
+# data path
+path_data: './data/household_power_consumption.csv'
+# train path
+path_train: 'data/train_per_hour.csv'
+# val path
+path_val: 'data/val_per_hour.csv'
+# test path
+path_test: 'data/test_per_hour.csv'
+# train size
+train_size: 0.8
+# test_size
+test_size: 0.3
+# columns to drop from data
+columns_to_drop: ["Date"]
+# Missing ratio for masked values
+missing_ratio: 0.4
