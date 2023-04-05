@@ -27,4 +27,4 @@ test_size: 0.3
 # columns to drop from data
 columns_to_drop: ["Date"]
 # Missing ratio for masked values
-missing_ratio: 0.3
+missing_ratio: 0.4
