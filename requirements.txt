@@ -2,7 +2,7 @@ torch
 pandas
 numpy
 matplotlib
-configure
+configue
 seaborn
 sklearn
 typing
