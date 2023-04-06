@@ -14,3 +14,4 @@ datetime
 warnings
 optuna
 plotly
+pre-commit

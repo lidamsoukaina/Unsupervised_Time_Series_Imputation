@@ -2,3 +2,4 @@
 __pycache__
 model_final*
 env
+*.ipynb_checkpoints
