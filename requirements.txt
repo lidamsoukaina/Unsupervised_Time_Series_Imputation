@@ -15,3 +15,4 @@ warnings
 optuna
 plotly
 pre-commit
+collections
