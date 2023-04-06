@@ -3,20 +3,22 @@ learning_rate: 0.001
 # train epochs
 epochs: 30
 # Sequence Length
-sequence_length: 60
+sequence_length: 72
 # Batch size
 batch_size: 16
 # ORT_MIT_LOSS parameter
-loss_parameter: 4
+loss_parameter: 0.5
 # checkpoints paths
 models_path: "./trained_models/TS"
 # dimension of the embedding
-d_model: 128
+d_model: 64
 # dimension of the output of FF layer
 d_ff: 64
 # Number of Encoders
-N: 3
+N: 1
 # Number of heads
-h: 8
+h: 4
 # dropout
 dropout: 0.5
+
+reduction_param: 0.7
