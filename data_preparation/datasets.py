@@ -22,9 +22,14 @@ class TSImputationTrainDataset(Dataset):
         assert len(self.data) >= self.seq_length
         # Get a sequence of data of length seq_length
         target = self.data[index : index + self.seq_length]
-        # generate masked input and the mask
-        masked_input, mask = random_mask_tensor(target, self.missing_ratio, index)
-        return target, masked_input, mask
+        # Generate artificially masked tensor avoiding previously masked elements
+        masked_input, mask_artif, mask_orig = random_mask_tensor(
+            target, self.missing_ratio, index
+        )
+        # replace nan with zero
+        masked_input[torch.isnan(masked_input)] = 0
+        target[torch.isnan(target)] = 0
+        return target, masked_input, mask_artif, mask_orig
 
 
 class TSImputationEvalDataset(Dataset):
@@ -55,6 +60,7 @@ class TSImputationEvalDataset(Dataset):
             masked_input = torch.cat([masked_input, padding], dim=0)
             mask = torch.cat([mask, padding.bool()], dim=0)
         masked_input[torch.isnan(masked_input)] = 0
+        target[torch.isnan(target)] = 0
         return target, masked_input, mask
 
 
@@ -62,14 +68,18 @@ def main(config, config_model, train, val, test, test_nan, test_mask):
     seq_length = config_model["sequence_length"]
     missing_ratio = config["missing_ratio"]
     batch_size = config_model["batch_size"]
-    # Check for missing values
-    assert train.isnull().sum().sum() == 0
-    assert val.isnull().sum().sum() == 0
-    assert test.isnull().sum().sum() == 0
     # Create datasets
     train_dataset = TSImputationTrainDataset(train, seq_length, missing_ratio)
     val_dataset = TSImputationTrainDataset(val, seq_length, missing_ratio)
     test_dataset = TSImputationEvalDataset(test, test_nan, test_mask, seq_length)
+    # Check for missing values
+    target, masked_input, mask_artif, mask_orig = next(iter(train_dataset))
+    assert torch.sum(torch.isnan(target)).item() == 0
+    assert torch.sum(torch.isnan(masked_input)).item() == 0
+    # Check for missing values
+    target, masked_input, mask = next(iter(test_dataset))
+    assert torch.sum(torch.isnan(target)).item() == 0
+    assert torch.sum(torch.isnan(masked_input)).item() == 0
     # Create dataloaders
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)

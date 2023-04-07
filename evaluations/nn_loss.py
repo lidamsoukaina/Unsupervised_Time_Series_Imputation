@@ -12,10 +12,19 @@ class ORT_MIT_Loss(nn.Module):
         self.delta = delta
 
     def forward(
-        self, y_pred: torch.Tensor, y_true: torch.Tensor, mask: torch.BoolTensor
+        self,
+        y_pred: torch.Tensor,
+        y_true: torch.Tensor,
+        mask_artif: torch.BoolTensor,
+        mask_orig: torch.BoolTensor,
     ) -> torch.Tensor:
-        MIT = torch.sum(torch.square(y_pred - y_true) * mask) / (torch.sum(mask))
-        ORT = torch.sum(torch.square(y_pred - y_true) * ~mask) / (torch.sum(~mask))
+        MIT = torch.sum(torch.square(y_pred - y_true) * mask_artif) / (
+            torch.sum(mask_artif)
+        )
+        mask_total = torch.logical_and(mask_artif, mask_orig)
+        ORT = torch.sum(torch.square(y_pred - y_true) * ~mask_total) / (
+            torch.sum(~mask_total)
+        )
         return ORT + self.delta * MIT
 
 

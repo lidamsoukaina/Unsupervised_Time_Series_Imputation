@@ -1,6 +1,7 @@
 from .utils import NoamOpt
 from IPython.display import clear_output
 import datetime
+import numpy as np
 
 import torch
 from torch.optim.lr_scheduler import ExponentialLR
@@ -51,19 +52,25 @@ def train_model(
         # training phase
         train_loss = 0
         model.train()
-        for i, (target, masked_input, mask) in enumerate(train_loader):
+        for i, (target, masked_input, mask_artif, mask_orig) in enumerate(train_loader):
             if torch.cuda.is_available():
-                target, masked_input, mask = (
+                target, masked_input, mask_artif, mask_orig = (
                     target.cuda(),
                     masked_input.cuda(),
-                    mask.cuda(),
+                    mask_artif.cuda(),
+                    mask_orig.cuda(),
                 )
             if is_flatten:
                 target = target.view(target.shape[0], target.shape[2] * target.shape[1])
                 masked_input = masked_input.view(
                     masked_input.shape[0], masked_input.shape[2] * masked_input.shape[1]
                 )
-                mask = mask.view(mask.shape[0], mask.shape[2] * mask.shape[1])
+                mask_artif = mask_artif.view(
+                    mask_artif.shape[0], mask_artif.shape[2] * mask_artif.shape[1]
+                )
+                mask_orig = mask_orig.view(
+                    mask_orig.shape[0], mask_orig.shape[2] * mask_orig.shape[1]
+                )
             if is_warmed:
                 optimizer.optimizer.zero_grad()
             else:
@@ -72,10 +79,9 @@ def train_model(
                 outputs = model(masked_input, None)
             else:
                 outputs = model(masked_input)
-            loss = loss_fn(outputs, target, mask)
+            loss = loss_fn(outputs, target, mask_artif, mask_orig)
             loss.backward()
             optimizer.step()
-            # lr_values.append(model_opt.optimizer.param_groups[0]['lr'])
             train_loss += loss.item()
         if not is_warmed:
             scheduler.step()
@@ -83,24 +89,30 @@ def train_model(
         # validation phase
         valid_loss = 0.0
         model.eval()
-        for i, (target, masked_input, mask) in enumerate(val_loader):
+        for i, (target, masked_input, mask_artif, mask_orig) in enumerate(train_loader):
             if torch.cuda.is_available():
-                target, masked_input, mask = (
+                target, masked_input, mask_artif, mask_orig = (
                     target.cuda(),
                     masked_input.cuda(),
-                    mask.cuda(),
+                    mask_artif.cuda(),
+                    mask_orig.cuda(),
                 )
             if is_flatten:
                 target = target.view(target.shape[0], target.shape[2] * target.shape[1])
                 masked_input = masked_input.view(
                     masked_input.shape[0], masked_input.shape[2] * masked_input.shape[1]
                 )
-                mask = mask.view(mask.shape[0], mask.shape[2] * mask.shape[1])
+                mask_artif = mask_artif.view(
+                    mask_artif.shape[0], mask_artif.shape[2] * mask_artif.shape[1]
+                )
+                mask_orig = mask_orig.view(
+                    mask_orig.shape[0], mask_orig.shape[2] * mask_orig.shape[1]
+                )
             if is_TS:
                 outputs = model(masked_input, None)
             else:
                 outputs = model(masked_input)
-            loss = loss_fn(outputs, target, mask)
+            loss = loss_fn(outputs, target, mask_artif, mask_orig)
             valid_loss += loss.item()
         train_loss_list.append(train_loss / len(train_loader))
         val_loss_list.append(valid_loss / len(val_loader))
