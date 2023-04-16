@@ -12,19 +12,20 @@ class_methods: [
     "knn",
     "mice",
 ]
-# data path
+# Parameter specific to household power consumption dataset
+## path to data
 path_data: './data/household_power_consumption.csv'
+## train size
+train_size: 0.8
+## test_size
+test_size: 0.3
+## columns to drop from data
+columns_to_drop: ["Date"]
 # train path
 path_train: 'data/train_per_hour.csv'
 # val path
 path_val: 'data/val_per_hour.csv'
 # test path
 path_test: 'data/test_per_hour.csv'
-# train size
-train_size: 0.8
-# test_size
-test_size: 0.3
-# columns to drop from data
-columns_to_drop: ["Date"]
 # Missing ratio for masked values
 missing_ratio: 0.4

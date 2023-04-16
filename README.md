@@ -35,29 +35,31 @@ pre-commit install
 ```
 5. You need to create folders `data` and `trained_models` and some subfolders:
 ```bash
+mkdir trained_models
 mkdir data trained_models/AE trained_models/convAE trained_models/LSTM_AE trained_models/TS
 ```
-6. Add your data in `data` folder (to test our used datasets, it is accessible through the link: https://drive.google.com/drive/folders/10OYuhaT3nEaJmoGJLNMzOiSVPCtMJJtW?usp=sharing)
+6. Add the csv file 'household_power_consumption.csv' to `data` folder (link to the csv https://drive.google.com/drive/folders/10OYuhaT3nEaJmoGJLNMzOiSVPCtMJJtW?usp=sharing)
+splited to train, val and test sets
+(to test our used datasets, it is accessible through the link: https://drive.google.com/drive/folders/10OYuhaT3nEaJmoGJLNMzOiSVPCtMJJtW?usp=sharing)
 
-remark: The data is a csv file of name 'household_power_consumption.csv' to be placed in the `data` folder
+**Remark**:
+If you want to use your own dataset, you need to add it to the `data` folder as 3 csv file (train, val and test) and edit the `config.yaml` file.
+Eding the `config.yaml` file is necessary to specify the path to the csv files and the name of the unnecessary columns (if none: columns_to_drop: []) .
 
-7. edit the config file.
+7. Now you can run the `main.ipynb` notebook.
 
-To test the project, you can run the `main.ipynb` notebook.
+**Remark**:
+- If you are using you own dataset, run the `test.ipynb` notebook.
+- You can change the hyperparameters of each model in the config files contained in the `training` folder.
+## :tada: Implemented models
+As baseline, we implemented various statistical based models : Linear Interpolation, MICE, NOCB, LOCF, Spline Interpolation, Median and Mode.
 
-## :memo: Results
-TODO: List models results compared to baseline models
-
-
-| model | MSE | MEAN | STD |
-|---|---|---|---|
-| LOCF | XX | XX | XX |
-| Transformer | XX | XX | XX |
-
-TODO: Describe and analyse the results
-
-## 🤔 What's next ?
-TODO: List the next steps
+To assess the effectiveness of using deep learning models for the task of unsupervised time series imputation, we implemented four different architectures in a try to cover the main types of neural network:
+- [x] Autoencoder
+- [x] Convolutional Autoencoder
+- [x] LSTM Autoencoder
+- [x] Transformer
+The architecture of the models is described in the `models` folder.
 
 ## :pencil2: Authors
 - LETAIEF Maram
