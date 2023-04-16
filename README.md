@@ -39,8 +39,6 @@ mkdir trained_models
 mkdir data trained_models/AE trained_models/convAE trained_models/LSTM_AE trained_models/TS
 ```
 6. Add the csv file 'household_power_consumption.csv' to `data` folder (link to the csv https://drive.google.com/drive/folders/10OYuhaT3nEaJmoGJLNMzOiSVPCtMJJtW?usp=sharing)
-splited to train, val and test sets
-(to test our used datasets, it is accessible through the link: https://drive.google.com/drive/folders/10OYuhaT3nEaJmoGJLNMzOiSVPCtMJJtW?usp=sharing)
 
 **Remark**:
 If you want to use your own dataset, you need to add it to the `data` folder as 3 csv file (train, val and test) and edit the `config.yaml` file.
@@ -58,7 +56,8 @@ To assess the effectiveness of using deep learning models for the task of unsupe
 - [x] Autoencoder
 - [x] Convolutional Autoencoder
 - [x] LSTM Autoencoder
-- [x] Transformer
+- [x] Transformer Encoder
+
 The architecture of the models is described in the `models` folder.
 
 ## :pencil2: Authors
